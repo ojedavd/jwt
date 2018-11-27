@@ -23,8 +23,15 @@ $app->post('/login', function (Request $request, Response $response, array $args
     }
  
     $settings = $this->get('settings'); // get settings array.
-    
-    $token = JWT::encode(['iat' => time(), 'exp' => time()+60, 'id' => $user->id, 'email' => $user->email], $settings['jwt']['secret'], "HS256");
+
+    $payload = [
+        'iat' => time(),
+        'exp' => time()+60,
+        'id' => $user->id,
+        'email' => $user->email
+    ];
+
+    $token = JWT::encode($payload , $settings['jwt']['secret'], "HS256");
  
     return $this->response->withJson(['token' => $token]);
  
