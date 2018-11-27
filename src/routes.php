@@ -37,5 +37,23 @@ $app->group('/api', function(\Slim\App $app) {
         return $this->response->withJson($request->getAttribute('decoded_token_data'));
 
     });
-   
+
+    $app->get("/secure",  function ($request, $response, $args) {
+ 
+        $data = ["status" => 1, 'msg' => "This route is secure!"];
+     
+        return $response->withStatus(200)
+            ->withHeader("Content-Type", "application/json")
+            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    });
+
+});
+
+$app->get("/not-secure",  function ($request, $response, $args) {
+ 
+    $data = ["status" => 1, 'msg' => "No need of token to access me"];
+ 
+    return $response->withStatus(200)
+        ->withHeader("Content-Type", "application/json")
+        ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 });
